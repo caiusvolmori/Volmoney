@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deslize os Botões</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400&display=swap');
+
+        .slider-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+
+        .button {
+            min-width: 300px;
+            max-width: 400px;
+            padding: 20px;
+            margin-right: 15px;
+            background: linear-gradient(90deg, #666, #333);
+            /* Gradiente mais suave */
+            color: white;
+            border: 2px solid #FFA500;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            white-space: normal;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-content span {
+            margin-left: 10px;
+            /* Espaçamento entre o texto e a seta */
+            font-size: 24px;
+            color: #FFA500;
+        }
+
+        .button:last-child .button-content span {
+            display: none;
+            /* Remove a seta do último botão */
+        }
+
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: #6699ff;
+            /* Azul mais claro para contraste */
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .step {
+            font-family: 'Montserrat', sans-serif;
+            color: #FFA500;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="button">
+                <div class="step">Passo 1</div>
+                <div class="button-content">
+                    <h3>Assista ao Vídeo</h3>
+                    <span>➔</span> <!-- Seta dentro do botão -->
+                </div>
+                <p>Quer uma renda extra sem sair de casa? Assista ao vídeo abaixo e veja como é fácil começar a investir
+                    e lucrar com a IQ Option.</p>
+            </div>
+            <div class="button">
+                <div class="step">Passo 2</div>
+                <div class="button-content">
+                    <h3>Cadastre-se na IQ Option</h3>
+                    <span>➔</span> <!-- Seta dentro do botão -->
+                </div>
+                <p>Clique no link abaixo e faça seu cadastro na IQ Option. É rápido e fácil!</p>
+            </div>
+            <div class="button">
+                <div class="step">Passo 3</div>
+                <div class="button-content">
+                    <h3>Envie o Print da abertura pelo WhatsApp</h3>
+                    <span>➔</span> <!-- Seta dentro do botão -->
+                </div>
+                <p>Envie o print da abertura pelo WhatsApp.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+
+        function slide(direction) {
+            const slider = document.getElementById('slider');
+            const totalButtons = slider.children.length;
+            const buttonWidth = slider.children[0].offsetWidth;
+            const maxIndex = totalButtons - 1;
+
+            if (direction === 'left' && currentIndex > 0) {
+                currentIndex--;
+            } else if (direction === 'right' && currentIndex < maxIndex) {
+                currentIndex++;
+            }
+
+            const newTransform = `translateX(-${currentIndex * buttonWidth}px)`;
+            slider.style.transform = newTransform;
+        }
+
+        // Adding touch functionality for mobile devices
+        let startX = 0;
+
+        document.getElementById('slider').addEventListener('touchstart', function (e) {
+            startX = e.touches[0].clientX;
+        });
+
+        document.getElementById('slider').addEventListener('touchmove', function (e) {
+            let moveX = e.touches[0].clientX;
+            let diffX = startX - moveX;
+
+            if (diffX > 50) { // Swipe left
+                slide('right');
+                startX = moveX;
+            } else if (diffX < -50) { // Swipe right
+                slide('left');
+                startX = moveX;
+            }
+        });
+    </script>
+
+</body>
+
+</html>
